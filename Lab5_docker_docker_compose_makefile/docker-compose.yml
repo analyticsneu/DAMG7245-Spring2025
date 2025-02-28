@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "${STREAMLIT_SERVER_PORT:-8501}:8501"
+    volumes:
+      - ./frontend:/app
+    env_file:
+      - .env
+    environment:
+      - STREAMLIT_SERVER_ADDRESS=${STREAMLIT_SERVER_ADDRESS:-0.0.0.0}
+      - BACKEND_URL=http://backend:${BACKEND_PORT:-8000}
+      - DEBUG=${DEBUG:-false}
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    environment:
+      - APP_ENV=${APP_ENV:-production}
+      - API_PREFIX=${API_PREFIX:-/api/v1}
+      - DEBUG=${DEBUG:-false}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
