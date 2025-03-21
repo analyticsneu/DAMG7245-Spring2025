@@ -1,0 +1,21 @@
+definition_version: 1
+snowpark:
+  functions:
+  - database: CICD_LAB_DEV
+    handler: function.main
+    name: mask_pii
+    returns: string
+    runtime: '3.10'
+    schema: DATA_SECURITY
+    signature:
+    - name: value
+      type: string
+    - default: email
+      name: type
+      type: string
+    - default: medium
+      name: level
+      type: string
+  project_name: cicd_lab
+  src: data_masker/
+  stage_name: data_security.deployment

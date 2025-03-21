@@ -1,0 +1,6 @@
+local:
+  duckduckgo: {}
+  weather: {}
+  document_generator: {}
+llamahub:
+  wikipedia.WikipediaToolSpec: {}

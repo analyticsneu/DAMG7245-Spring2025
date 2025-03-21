@@ -1,0 +1,73 @@
+name: Snowpark CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          pip install -r src/data_masker/requirements.txt
+      - name: Run tests
+        run: pytest
+
+  deploy:
+    needs: test
+    if: success() && (github.event_name != 'pull_request')
+    runs-on: ubuntu-latest
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+      SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install snowflake-cli-labs
+          pip install pyyaml
+      - name: Set environment variables
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+            echo "SNOWFLAKE_DATABASE=CICD_LAB_PROD" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+            echo "SNOWFLAKE_DATABASE=CICD_LAB_DEV" >> $GITHUB_ENV
+          fi
+          # Ensure warehouse is set to a default if not provided
+          if [ -z "$SNOWFLAKE_WAREHOUSE" ]; then
+            echo "SNOWFLAKE_WAREHOUSE=CICD_LAB_WH" >> $GITHUB_ENV
+          fi
+      - name: Deploy Data Masking UDF
+        run: |
+          cd src/data_masker
+          # Show environment for debugging
+          echo "Using database: $SNOWFLAKE_DATABASE"
+          echo "Using warehouse: $SNOWFLAKE_WAREHOUSE"
+          
+          # Ensure we use the fully qualified stage name
+          sed -i "s|stage_name: \"data_security.deployment\"|stage_name: \"$SNOWFLAKE_DATABASE.data_security.deployment\"|g" snowflake.yml
+          
+          snow snowpark build --temporary-connection
+          snow snowpark deploy --replace --temporary-connection

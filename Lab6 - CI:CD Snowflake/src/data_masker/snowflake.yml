@@ -1,0 +1,22 @@
+definition_version: 1
+snowpark:
+  project_name: "cicd_lab"
+  # Use fully qualified stage name - this will be modified by the GitHub Action
+  stage_name: "data_security.deployment"
+  src: "data_masker/"
+  functions:
+    - name: "mask_pii"
+      database: "CICD_LAB_DEV"  # Will be replaced during deployment
+      schema: "DATA_SECURITY"
+      handler: "function.main"
+      runtime: "3.10"
+      signature:
+        - name: "value"
+          type: "string"
+        - name: "type"
+          type: "string"
+          default: "email"
+        - name: "level"
+          type: "string"
+          default: "medium"
+      returns: string

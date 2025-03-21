@@ -1,0 +1,10 @@
+__pycache__
+storage
+.env
+output
+static/
+chroma.log
+poetry.lock
+my_chroma_data/**
+my_chroma_data/**
+/docs/**

@@ -1,0 +1,5 @@
+environment: "dev"
+database_name: "CICD_LAB_DEV"
+schema_name: "DATA_SECURITY"
+stage_name: "DEPLOYMENT"
+warehouse_name: "CICD_LAB_WH"
