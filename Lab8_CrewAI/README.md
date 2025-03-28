@@ -67,9 +67,8 @@ This notebook shows how to leverage web search for creating factual, well-resear
 CrewAI-Experiments/
 ├── README.md
 ├── notebooks/
-│   ├── crewai_concepts.md
-│   ├── book_writer_crew_flow.md
-│   └── websearch_book_writer.md
+│   ├── crewai_concepts.ipynb
+│   └── websearch_book_writer.ipynb
 └── books/
     └── (Generated book files)
 ```
