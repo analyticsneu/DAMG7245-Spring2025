@@ -15,20 +15,11 @@ This notebook provides a comprehensive introduction to CrewAI, covering fundamen
 - Implementing custom tools
 - Working with memory and state management
 
-### 2. Book Writer with Crew and Flow (book_writer_crew_flow.md)
-
-This notebook demonstrates two approaches to building an automated book writing system:
-
-- Crew-based approach with specialized agents for outlining, research, and writing
-- Flow-based approach with structured state management and transitions
-- Saving completed books to the filesystem
-- Limiting output to 2 chapters for prototype purposes
-
-### 3. Web Research Book Writer (websearch_book_writer.md)
+### 2. Web Research Book Writer (websearch_book_writer.md)
 
 This notebook shows how to leverage web search for creating factual, well-researched books:
 
-- Using SerperDevTool for internet research
+- Using BrightData for internet research
 - Researching topics in real-time with up-to-date information
 - Creating structured outlines based on research findings
 - Writing content that incorporates gathered information
