@@ -1,0 +1,48 @@
+{
+  "mcpServers": {
+    "llamacloud": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@llamaindex/mcp-server-llamacloud",
+        "--index",
+        "sample-docs",
+        "--description",
+        "Sample documentation for the lab",
+        "--index",
+        "course-materials",
+        "--description",
+        "Course materials for big data intelligence and analytics"
+      ],
+      "env": {
+        "LLAMA_CLOUD_PROJECT_NAME": "your-project-name-here",
+        "LLAMA_CLOUD_API_KEY": "your-llamacloud-api-key-here"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        ""
+      ],
+      "env": {}
+    },
+    "fetch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-fetch",
+        ""
+      ],
+      "env": {}
+    },
+    "custom": {
+      "command": "python",
+      "args": [
+        "/path/to/basic_mcp_server.py"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -7,15 +7,6 @@ logs
 .DS_Store
 .env
 *.env
+*.log
 *.sqlite3
 *.db
-*.log
-*.egg-info
-*.egg
-*.zip
-*.tar.gz
-*.tar
-*.tgz
-*.rar
-*.7z
-    
